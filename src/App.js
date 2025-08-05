@@ -1,0 +1,70 @@
+import React, { useEffect } from "react";
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import axios from "axios";
+
+// Components
+import Header from "./components/Header";
+import Hero from "./components/Hero";
+import About from "./components/About";
+import Skills from "./components/Skills";
+import Projects from "./components/Projects";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
+import AnimatedBackground from "./components/AnimatedBackground";
+import { Toaster } from "./components/ui/toaster";
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+
+const Home = () => {
+  const helloWorldApi = async () => {
+    try {
+      const response = await axios.get(`${API}/`);
+      console.log(response.data.message);
+    } catch (e) {
+      console.error(e, `errored out requesting / api`);
+    }
+  };
+
+  useEffect(() => {
+    helloWorldApi();
+  }, []);
+
+  return (
+    <div className="min-h-screen relative">
+      {/* Animated Background */}
+      <AnimatedBackground />
+      
+      {/* Main Content */}
+      <div className="relative z-10">
+        <Header />
+        <main>
+          <Hero />
+          <About />
+          <Skills />
+          <Projects />
+          <Contact />
+        </main>
+        <Footer />
+        <Toaster />
+      </div>
+    </div>
+  );
+};
+
+function App() {
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}>
+            <Route index element={<Home />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
+}
+
+export default App;
